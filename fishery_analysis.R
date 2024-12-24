@@ -17,23 +17,9 @@ theme_pubr(base_family = "ns", base_size = 10) |>
 showtext_auto()
 
 # data preparation
-
-# country groups
-country_group = 
-  read_csv("./data/CL_FI_COUNTRY_GROUPS.csv") |> 
-  select(UN_Code, Identifier, Name_En, GeoRegion_Group_En) |> 
-  filter(str_detect(GeoRegion_Group_En, "Asia")) |> 
-  filter(
-    Name_En %in% c("Japan", "Republic of Korea", "China", "Taiwan Province of China")
-  )
-
-# Water Area
-water_area = read_csv("./data/CL_FI_WATERAREA_GROUPS.csv")
-
-
-# Global Production Data set
-production = read_csv("./data/Global_production_quantity.csv") |> 
-  dplyr::rename(UN_Code = COUNTRY.UN_CODE)
+country_group = read_rds("./data/country_groups.rds")
+water_area = read_rds("./data/water_area.rds")
+production = read_rds("./data/global_fishery_production.rds")
 
 # 東シナ海沿岸国の漁獲量の推移
 country_group |> 
@@ -65,14 +51,14 @@ country_group |>
     axis.title.x = element_blank()
   )
 
-# height = 80
-# width = height
-# pdfname = "./image/log10fishery_production_in_ECS.pdf"
-# pngname = str_replace(pdfname, "pdf", "PNG")
-# ggsave(filename = pdfname, height = height, width = width,
-#        units = "mm")
-# image_read_pdf(pdfname, density = 300) |>
-#   image_write(pngname)
+height = 80
+width = height
+pdfname = "./image/log10fishery_production_in_ECS.pdf"
+pngname = str_replace(pdfname, "pdf", "PNG")
+ggsave(filename = pdfname, height = height, width = width,
+       units = "mm")
+image_read_pdf(pdfname, density = 300) |>
+  image_write(pngname)
 
 # Captureだけプロット
 country_group |> 
@@ -105,14 +91,14 @@ country_group |>
     axis.title.x = element_blank()
   )
 
-# height = 80
-# width = height
-# pdfname = "./image/log10fishery_production_in_ECS_by_capture.pdf"
-# pngname = str_replace(pdfname, "pdf", "PNG")
-# ggsave(filename = pdfname, height = height, width = width,
-#        units = "mm")
-# image_read_pdf(pdfname, density = 300) |>
-#   image_write(pngname)
+height = 80
+width = height
+pdfname = "./image/log10fishery_production_in_ECS_by_capture.pdf"
+pngname = str_replace(pdfname, "pdf", "PNG")
+ggsave(filename = pdfname, height = height, width = width,
+       units = "mm")
+image_read_pdf(pdfname, density = 300) |>
+  image_write(pngname)
 
 # capture 以外のデータをプロット
 country_group |> 
@@ -145,15 +131,14 @@ country_group |>
     axis.title.x = element_blank()
   )
 
-# height = 80
-# width = height
-# pdfname = "./image/log10fishery_production_in_ECS_without_capture.pdf"
-# pngname = str_replace(pdfname, "pdf", "PNG")
-# ggsave(filename = pdfname, height = height, width = width,
-#        units = "mm")
-# image_read_pdf(pdfname, density = 300) |>
-#   image_write(pngname)
-
+height = 80
+width = height
+pdfname = "./image/log10fishery_production_in_ECS_without_capture.pdf"
+pngname = str_replace(pdfname, "pdf", "PNG")
+ggsave(filename = pdfname, height = height, width = width,
+       units = "mm")
+image_read_pdf(pdfname, density = 300) |>
+  image_write(pngname)
 
 # 採捕データだけで一般化加法モデル
 df = country_group |> 
@@ -220,16 +205,13 @@ df |>
   scale_colour_viridis_d(end = 0.8) + 
   scale_fill_viridis_d(end = 0.8)
 
-# height = 80
-# width = height
-# pdfname = "./image/gam_log10fishery_capture.pdf"
-# pngname = str_replace(pdfname, "pdf", "PNG")
-# ggsave(filename = pdfname, height = height, width = width,
-#        units = "mm")
-# image_read_pdf(pdfname, density = 300) |>
-#   image_write(pngname)
+height = 80
+width = height
+pdfname = "./image/gam_log10fishery_capture.pdf"
+pngname = str_replace(pdfname, "pdf", "PNG")
+ggsave(filename = pdfname, height = height, width = width,
+       units = "mm")
+image_read_pdf(pdfname, density = 300) |>
+  image_write(pngname)
 
 anova(m1)
-
-
-
