@@ -190,7 +190,8 @@ df |>
     legend.position = c(0, 1),
     legend.justification = c(0, 1),
     legend.background = element_blank(),
-    legend.direction = "vertical",
+    legend.direction = "horizontal",
+    legend.title = element_blank(),
     axis.title.x = element_blank()
   ) + 
   scale_x_continuous(
